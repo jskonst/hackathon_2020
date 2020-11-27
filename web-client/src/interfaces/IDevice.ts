@@ -1,4 +1,5 @@
 export default interface IDevice {
-  name: string,
-  imei: string
+  id?: string;
+  name: string;
+  imei: string;
 }

@@ -1,14 +1,16 @@
 import React from "react";
 import Map from "../map/Map";
-import Device from '../Device/Device'
+import { DevicesList } from "../Device/Device-view-table";
+import DeviceControlPanel from "../Device/Device-control-panel";
 import "./App.css";
 
 const App: React.FC = () => {
   return (
-	<>
-      <Map/>
-      <Device/>
-	</>
+    <>
+      <DevicesList />
+      <Map />
+      <DeviceControlPanel />
+    </>
   );
 };
 
