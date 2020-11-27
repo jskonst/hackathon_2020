@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-// import { ApiMapPoints } from "../../api/ApiMapPoints";
+import { ApiMapPositions } from "../../api/ApiMapPoints";
+import ICoordinate from "../../interfaces/ICoordinate";
 import "../app/App.css";
 
 const MapPlaceholder: React.FC = () => {
@@ -16,12 +17,17 @@ let position = { lat: 56.99, lng: 40.97 };
 const zoom = 14;
 
 const Map: React.FC = () => {
-  // const [coords, coodrsmass] = useState({ lat: 56.99, lng: 40.97 });
+  const [coords, coodrsMass] = useState({ lat: 56.99, lng: 40.97 });
 
-  // useEffect(() => {
-  //   const points = ApiMapPoints();
-  //   coodrsmass.setState(points);
-  // },[]);
+  useEffect(() => {
+    const url = "http://localhost:3000/positions";
+    const data = await ApiMapPositions(url);
+    if (data !== undefined) {
+      let x: ICoordinate = { lat: data[0].latituve, lng: data[0].longituve };
+      coodrsMass((coords) => x);
+    }
+    // oodrsmass.setState(points);
+  }, []);
   return (
     <MapContainer center={position} zoom={zoom} placeholder={MapPlaceholder}>
       <TileLayer
