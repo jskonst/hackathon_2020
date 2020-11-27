@@ -27,12 +27,12 @@ func New(filenames ...string) (*Config, error) {
 
 	clientId, exists := os.LookupEnv("CLIENT_ID")
 	if exists == false {
-		return nil, fmt.Errorf("")
+		return nil, fmt.Errorf("missing CLIENT_ID")
 	}
 
 	clientSecret, exists := os.LookupEnv("CLIENT_SECRET")
 	if exists == false {
-		return nil, fmt.Errorf("")
+		return nil, fmt.Errorf("missing CLIENT_SECRET")
 	}
 
 	return &Config{
