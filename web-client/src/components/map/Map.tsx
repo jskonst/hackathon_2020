@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Polyline,
+  Popup,
+  TileLayer,
+} from "react-leaflet";
 import { ApiMapPositions } from "../../api/ApiMapPoints";
 import ICoordinate from "../../interfaces/ICoordinate";
-import "../App/App.css";
+import IServerResponse from "../../interfaces/IServerResponse";
+import "../app/App.css";
 
 const MapPlaceholder: React.FC = () => {
   return (
@@ -13,36 +20,50 @@ const MapPlaceholder: React.FC = () => {
   );
 };
 
-let position = { lat: 56.99, lng: 40.97 };
+const startPosition = { lat: 56.99, lng: 40.97 };
 const zoom = 14;
 
+const fakePositions = [
+  { lat: 56.23, lng: 40.217 },
+  { lat: 56.35, lng: 40.357 },
+  { lat: 56.42, lng: 40.467 },
+  { lat: 56.56, lng: 40.527 },
+  { lat: 56.67, lng: 40.697 },
+  { lat: 56.79, lng: 40.757 },
+  { lat: 56.99, lng: 40.97 },
+];
+
 const Map: React.FC = () => {
-  const [coords, coodrsMass] = useState({ lat: 56.99, lng: 40.97 });
+  const [positions, setPositions] = useState<ICoordinate[]>([]);
 
   useEffect(() => {
     const getPos = async () => {
-      const url = "/api/positions";
-      let data = await ApiMapPositions(url);
+      let data: IServerResponse[] | undefined = await ApiMapPositions();
       if (data !== undefined) {
-        let x: ICoordinate = { lat: data[0].latituve, lng: data[0].longituve };
-        coodrsMass((coords) => x);
+        let result: ICoordinate[] = data.map((item) => {
+          return { lat: item.latitude, lng: item.longitude };
+        });
+        setPositions(result);
       }
-    }
-
+    };
     getPos();
   }, []);
   return (
-    <MapContainer center={position} zoom={zoom} placeholder={MapPlaceholder}>
+    <MapContainer
+      center={startPosition}
+      zoom={zoom}
+      placeholder={MapPlaceholder}
+    >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={position}>
+      <Marker position={startPosition}>
         <Popup>
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
       </Marker>
-      {/* <Polyline positions ={positions} />  */}
+      <Polyline positions={positions} />
     </MapContainer>
   );
 };
