@@ -2,18 +2,20 @@ package device
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"src/common"
 	"src/database"
+	"src/logger"
 	"strconv"
 )
 
 // InitializeRoutes ...
-func InitializeRoutes(router *mux.Router, db *database.Database) {
+func InitializeRoutes(router *mux.Router, db *database.Database, logger *logger.Logger) {
 	router.HandleFunc("/api/devices", getDevicesHandler(db)).Methods("GET")
 	router.HandleFunc("/api/devices/{id:[0-9]+}", getDeviceByIdHandler(db)).Methods("GET")
-	router.HandleFunc("/api/devices", addDeviceHandler(db)).Methods("POST")
+	router.HandleFunc("/api/devices", addDeviceHandler(db, logger)).Methods("POST")
 }
 
 // getDevicesHandler ...
@@ -49,7 +51,7 @@ func getDeviceByIdHandler(db *database.Database) http.HandlerFunc {
 }
 
 // addDeviceHandler ...
-func addDeviceHandler(db *database.Database) http.HandlerFunc {
+func addDeviceHandler(db *database.Database, logger *logger.Logger) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		var device Device
 		repository := NewDeviceRepository(db)
@@ -66,5 +68,8 @@ func addDeviceHandler(db *database.Database) http.HandlerFunc {
 			common.ErrorResponse(writer, err)
 			return
 		}
+
+		json, _ := json.Marshal(device)
+		logger.Info().Msg(fmt.Sprintf("added new device: %s", json))
 	}
 }
