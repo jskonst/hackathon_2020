@@ -1,9 +1,8 @@
-import react from "react";
-import IDataFormat from "../interfaces/ICoordinate";
 import IServerRespone from "../interfaces/IServerResponse";
 
-export const ApiMapPositions = async () => {
-  const url = "/api/positions";
+const url = "/api/positions";
+
+export const ApiGetPositions = async () => {
   try {
     const res = await fetch(url, {
       method: "GET",

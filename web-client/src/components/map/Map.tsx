@@ -6,7 +6,7 @@ import {
   Popup,
   TileLayer,
 } from "react-leaflet";
-import { ApiMapPositions } from "../../api/ApiMapPoints";
+import { ApiGetPositions } from "../../api/ApiMapPoints";
 import ICoordinate from "../../interfaces/ICoordinate";
 import IServerResponse from "../../interfaces/IServerResponse";
 import "../app/App.css";
@@ -14,7 +14,7 @@ import "../app/App.css";
 const MapPlaceholder: React.FC = () => {
   return (
     <p>
-      Map of London.{" "}
+      Map of Ivanovo.{" "}
       <noscript>You need to enable JavaScript to see this map.</noscript>
     </p>
   );
@@ -38,7 +38,7 @@ const Map: React.FC = () => {
 
   useEffect(() => {
     const getPos = async () => {
-      let data: IServerResponse[] | undefined = await ApiMapPositions();
+      let data: IServerResponse[] | undefined = await ApiGetPositions();
       if (data !== undefined) {
         let result: ICoordinate[] = data.map((item) => {
           return { lat: item.latitude, lng: item.longitude };
