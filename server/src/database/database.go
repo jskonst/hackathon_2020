@@ -17,6 +17,7 @@ func New(connectionString string) (*Database, error) {
 		return nil, err
 	}
 
+	// Adds postgis plugin for postgresql
 	_, err = db.Exec("CREATE EXTENSION IF NOT EXISTS postgis;")
 	if err != nil {
 		return nil, err

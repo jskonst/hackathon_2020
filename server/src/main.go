@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/jskonst/hackathon_2020/server/common"
+	"github.com/jskonst/hackathon_2020/server/config"
 	"github.com/jskonst/hackathon_2020/server/database"
 	"github.com/jskonst/hackathon_2020/server/position"
 	"log"
@@ -39,9 +40,14 @@ func getPointHandler(database *database.Database) http.HandlerFunc {
 }
 
 func main() {
-	db, err := database.New("user=postgres password=postgres host=localhost port=5432 database=geodb sslmode=disable")
+	cfg, err := config.New("../.env")
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %s", err.Error())
+		log.Fatal(err)
+	}
+
+	db, err := database.New(cfg.ConnectionString)
+	if err != nil {
+		log.Fatalf("failed to connect to database: %s", err.Error())
 	}
 
 	router := mux.NewRouter()

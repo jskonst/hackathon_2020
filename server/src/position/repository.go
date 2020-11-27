@@ -14,6 +14,7 @@ func NewRepository(database *database.Database) *PositionRepository {
 	return &PositionRepository{database: database}
 }
 
+// GetPositions ...
 func (r *PositionRepository) GetPositions() ([]Position, error) {
 	var positions []Position
 
