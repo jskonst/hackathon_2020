@@ -11,9 +11,9 @@ import (
 
 // InitializeRoutes ...
 func InitializeRoutes(router *mux.Router, db *database.Database) {
-	router.HandleFunc("/devices", getDevicesHandler(db)).Methods("GET")
-	router.HandleFunc("/devices/{id:[0-9]+}", getDeviceByIdHandler(db)).Methods("GET")
-	router.HandleFunc("/devices", addDeviceHandler(db)).Methods("POST")
+	router.HandleFunc("/api/devices", getDevicesHandler(db)).Methods("GET")
+	router.HandleFunc("/api/devices/{id:[0-9]+}", getDeviceByIdHandler(db)).Methods("GET")
+	router.HandleFunc("/api/devices", addDeviceHandler(db)).Methods("POST")
 }
 
 // getDevicesHandler ...

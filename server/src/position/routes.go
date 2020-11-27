@@ -10,8 +10,8 @@ import (
 
 // InitializeRoutes
 func InitializeRoutes(router *mux.Router, db *database.Database) {
-	router.HandleFunc("/positions", getPositionHandler(db)).Methods("GET")
-	router.HandleFunc("/positions", addPositionHandler(db)).Methods("POST")
+	router.HandleFunc("/api/positions", getPositionHandler(db)).Methods("GET")
+	router.HandleFunc("/api/positions", addPositionHandler(db)).Methods("POST")
 }
 
 // getPositionHandler ...
