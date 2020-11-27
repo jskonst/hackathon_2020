@@ -1,1 +1,3 @@
 # hackathon_2020
+
+CREATE EXTENSION IF NOT EXISTS postgis;
