@@ -1,4 +1,4 @@
-module github.com/jskonst/hackathon_2020/server
+module src
 
 go 1.15
 

@@ -2,11 +2,11 @@ package main
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/jskonst/hackathon_2020/server/config"
-	"github.com/jskonst/hackathon_2020/server/database"
-	"github.com/jskonst/hackathon_2020/server/position"
 	"log"
 	"net/http"
+	"src/config"
+	"src/database"
+	"src/position"
 )
 
 func main() {

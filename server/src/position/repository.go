@@ -1,7 +1,7 @@
 package position
 
 import (
-	"github.com/jskonst/hackathon_2020/server/database"
+	"src/database"
 )
 
 // PositionRepository ....

@@ -3,9 +3,9 @@ package position
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/jskonst/hackathon_2020/server/common"
-	"github.com/jskonst/hackathon_2020/server/database"
 	"net/http"
+	"src/common"
+	"src/database"
 )
 
 // InitializeRoutes
