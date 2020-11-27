@@ -71,7 +71,6 @@ module.exports = {
     host: SERVER_WEB_HOST,
     port: SERVER_WEB_PORT,
     proxy: {
-      '/positions': proxy,
       '/api': proxy,
       '/acc': proxy,
       '/auth': proxy,
