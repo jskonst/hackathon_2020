@@ -26,7 +26,7 @@ func getPositionHandler(db *database.Database, logger *logger.Logger) http.Handl
 			common.ErrorResponse(writer, err)
 			return
 		}
-		
+
 		common.JSONResponse(writer, positions, http.StatusOK)
 	}
 }
