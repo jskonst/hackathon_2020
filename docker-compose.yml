@@ -19,7 +19,7 @@ services:
     - db
 
   server:
-    # env_file:
+    env_file: ./server/.env
     image: test-server
     build:
       context: .
