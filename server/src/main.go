@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"src/config"
 	"src/database"
+	"src/device"
 	"src/position"
 )
 
@@ -22,6 +23,7 @@ func main() {
 
 	router := mux.NewRouter()
 	position.InitializeRoutes(router, db)
+	device.InitializeRoutes(router, db)
 
 	err = http.ListenAndServe(":3000", router)
 	log.Fatal(err)

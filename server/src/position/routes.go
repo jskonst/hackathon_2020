@@ -9,22 +9,19 @@ import (
 )
 
 // InitializeRoutes
-func InitializeRoutes(router *mux.Router, database *database.Database) {
-	router.HandleFunc("/positions", getPositionHandler(database)).Methods("GET")
-	router.HandleFunc("/positions", addPositionHandler(database)).Methods("POST")
+func InitializeRoutes(router *mux.Router, db *database.Database) {
+	router.HandleFunc("/positions", getPositionHandler(db)).Methods("GET")
+	router.HandleFunc("/positions", addPositionHandler(db)).Methods("POST")
 }
 
 // getPositionHandler ...
-func getPositionHandler(database *database.Database) http.HandlerFunc {
+func getPositionHandler(db *database.Database) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		repository := NewRepository(database)
+		repository := NewPositionRepository(db)
 		positions, err := repository.GetPositions()
 
 		if err != nil {
-			common.APIErrorResponse(writer, common.APIError{
-				StatusCode: http.StatusInternalServerError,
-				Message:    err.Error(),
-			})
+			common.ErrorResponse(writer, err)
 			return
 		}
 
@@ -33,10 +30,10 @@ func getPositionHandler(database *database.Database) http.HandlerFunc {
 }
 
 // addPositionHandler ...
-func addPositionHandler(database *database.Database) http.HandlerFunc {
+func addPositionHandler(db *database.Database) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		var position Position
-		repository := NewRepository(database)
+		repository := NewPositionRepository(db)
 
 		request.Body = http.MaxBytesReader(writer, request.Body, 1048576)
 		err := json.NewDecoder(request.Body).Decode(&position)
@@ -46,7 +43,7 @@ func addPositionHandler(database *database.Database) http.HandlerFunc {
 			return
 		}
 
-		if err = repository.AddPosition(&position); err != nil {
+		if err = repository.AddPosition(position); err != nil {
 			common.ErrorResponse(writer, err)
 			return
 		}
