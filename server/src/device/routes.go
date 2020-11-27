@@ -2,7 +2,6 @@ package device
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"src/common"
@@ -19,12 +18,13 @@ func InitializeRoutes(router *mux.Router, db *database.Database, logger *logger.
 }
 
 // getDevicesHandler ...
-func getDevicesHandler(db *database.Database) http.HandlerFunc {
+func getDevicesHandler(db *database.Database, logger *logger.Logger) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		repository := NewDeviceRepository(db)
 		devices, err := repository.GetDevices()
 
 		if err != nil {
+			logger.Err(err)
 			common.ErrorResponse(writer, err)
 			return
 		}
@@ -34,7 +34,7 @@ func getDevicesHandler(db *database.Database) http.HandlerFunc {
 }
 
 // getDeviceByIdHandler ...
-func getDeviceByIdHandler(db *database.Database) http.HandlerFunc {
+func getDeviceByIdHandler(db *database.Database, logger *logger.Logger) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		id, _ := strconv.ParseInt(mux.Vars(request)["id"], 10, 32)
 
@@ -42,6 +42,7 @@ func getDeviceByIdHandler(db *database.Database) http.HandlerFunc {
 		device, err := repository.GetDeviceById(int(id))
 
 		if err != nil {
+			logger.Err(err)
 			common.ErrorResponse(writer, err)
 			return
 		}
@@ -60,16 +61,17 @@ func addDeviceHandler(db *database.Database, logger *logger.Logger) http.Handler
 		err := json.NewDecoder(request.Body).Decode(&device)
 
 		if err != nil {
+			logger.Err(err)
 			common.ErrorResponse(writer, err)
 			return
 		}
 
 		if err = repository.AddDevice(device); err != nil {
+			logger.Err(err)
 			common.ErrorResponse(writer, err)
 			return
 		}
 
-		json, _ := json.Marshal(device)
-		logger.Info().Msg(fmt.Sprintf("added new device: %s", json))
+		logger.Info().Interface("device", device).Msg("added new device")
 	}
 }

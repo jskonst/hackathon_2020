@@ -15,3 +15,4 @@ func NewLogger() *Logger {
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
 	return &Logger{Logger: logger}
 }
+

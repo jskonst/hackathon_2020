@@ -2,7 +2,6 @@ package position
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"src/common"
@@ -23,10 +22,11 @@ func getPositionHandler(db *database.Database, logger *logger.Logger) http.Handl
 		positions, err := repository.GetPositions()
 
 		if err != nil {
+			logger.Err(err)
 			common.ErrorResponse(writer, err)
 			return
 		}
-
+		
 		common.JSONResponse(writer, positions, http.StatusOK)
 	}
 }
@@ -52,7 +52,6 @@ func addPositionHandler(db *database.Database, logger *logger.Logger) http.Handl
 			return
 		}
 
-		json, _ := json.Marshal(position)
-		logger.Info().Msg(fmt.Sprintf("added new position: %s", json))
+		logger.Info().Interface("position", position).Msg("added new position")
 	}
 }
