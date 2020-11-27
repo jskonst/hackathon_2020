@@ -27,11 +27,11 @@ func (r *DeviceRepository) GetDevices() (devices []Device, err error) {
 	return devices, nil
 }
 
-// GetDeviceById ...
-func (r *DeviceRepository) GetDeviceById(id int) (device Device, err error) {
-	query := "SELECT * FROM devices WHERE id = $1 LIMIT 1;"
+// GetDeviceByIMEI ...
+func (r *DeviceRepository) GetDeviceByIMEI(imei string) (device Device, err error) {
+	query := "SELECT * FROM devices WHERE imei = $1 LIMIT 1;"
 
-	if err := r.database.QueryRowx(query, id).StructScan(&device); err != nil {
+	if err := r.database.QueryRowx(query, imei).StructScan(&device); err != nil {
 		return device, err
 	}
 
