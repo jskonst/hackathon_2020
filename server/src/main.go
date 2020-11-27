@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"log"
 	"net/http"
 	"src/config"
@@ -25,6 +26,11 @@ func main() {
 	position.InitializeRoutes(router, db)
 	device.InitializeRoutes(router, db)
 
-	err = http.ListenAndServe(":3000", router)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+	})
+
+	err = http.ListenAndServe(":3000", c.Handler(router))
 	log.Fatal(err)
 }
