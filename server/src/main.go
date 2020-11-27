@@ -11,6 +11,7 @@ import (
 	"src/config"
 	"src/database"
 	"src/device"
+	"src/logger"
 	"src/position"
 )
 
@@ -33,10 +34,11 @@ func main() {
 		Endpoint:     google.Endpoint,
 	}
 
+	logg := logger.NewLogger()
 	router := mux.NewRouter()
 
-	position.InitializeRoutes(router, db)
-	device.InitializeRoutes(router, db)
+	position.InitializeRoutes(router, db, logg)
+	device.InitializeRoutes(router, db, logg)
 	auth.InitializeRoutes(router, ocfg)
 
 	c := cors.New(cors.Options{
