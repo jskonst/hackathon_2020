@@ -6,10 +6,10 @@ export const ApiMapPositions = async (url: string) => {
   try {
     const res = await fetch(url, {
       method: "GET",
+      headers: {'Content-Type': 'application/json'}
     });
     if (res.ok) {
       const json = (await res.json()) as IServerRespone[];
-      console.log(json);
       return json;
     }
   } catch (err) {
