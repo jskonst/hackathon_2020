@@ -3,8 +3,11 @@ package main
 import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
 	"log"
 	"net/http"
+	"src/auth"
 	"src/config"
 	"src/database"
 	"src/device"
@@ -22,9 +25,19 @@ func main() {
 		log.Fatalf("failed to connect to database: %s", err.Error())
 	}
 
+	ocfg := &oauth2.Config{
+		ClientID:     cfg.ClientID,
+		ClientSecret: cfg.ClientSecret,
+		RedirectURL:  "http://localhost:3000/api/me",
+		Scopes:       []string{"profile"},
+		Endpoint:     google.Endpoint,
+	}
+
 	router := mux.NewRouter()
+
 	position.InitializeRoutes(router, db)
 	device.InitializeRoutes(router, db)
+	auth.InitializeRoutes(router, ocfg)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
