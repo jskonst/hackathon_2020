@@ -1,0 +1,44 @@
+{
+    "folders": [
+        {
+            "name": "Configs (Root)",
+            "path": "."
+        },
+        {
+            "name": "server",
+            "path": "server"
+        },
+        {
+            "name": "web",
+            "path": "web-client"
+        },
+        {
+            "name": "mobile",
+            "path": "mobile",
+        },
+    ],
+    "settings": {
+        "files.exclude": {
+            "**/.git": true,
+            "**/node_modules": true,
+            "server/**/*": true,
+            "web/**/*": true,
+            "mobile/**/*": true,
+        },
+        "editor.detectIndentation": false,
+        "editor.tabSize": 4,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.tslint": true
+        },
+        "go.useLanguageServer": true,
+    },
+    "extensions": {
+        "recommendations": [
+            "msjsdiag.debugger-for-chrome",
+            "ms-azuretools.vscode-docker",
+            "ms-vscode.vscode-typescript-tslint-plugin",
+            "mhutchie.git-graph"
+        ]
+    },
+    "go.alternateTools": {}
+}
