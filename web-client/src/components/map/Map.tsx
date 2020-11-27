@@ -21,7 +21,7 @@ const Map: React.FC = () => {
 
   useEffect(() => {
     const getPos = async () => {
-      const url = "http://localhost:3000/positions";
+      const url = "/api/positions";
       let data = await ApiMapPositions(url);
       if (data !== undefined) {
         let x: ICoordinate = { lat: data[0].latituve, lng: data[0].longituve };
