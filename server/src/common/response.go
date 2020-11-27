@@ -12,18 +12,25 @@ type APIError struct {
 	Message    string `json:"message"`
 }
 
+// JSONResponse ...
+func JSONResponse(writer http.ResponseWriter, response interface{}, statusCode int) {
+	writer.Header().Set("Content-Type", "application/json; charset=utf-8")
+	writer.WriteHeader(statusCode)
+
+	if err := json.NewEncoder(writer).Encode(response); err != nil {
+		log.Fatal(err)
+	}
+}
+
 // CreateErrorResponse ...
-func CreateErrorResponse(writer http.ResponseWriter, e APIError) {
-	writer.Header().Set("Content-Type", "application/json")
-	writer.WriteHeader(e.StatusCode)
+func APIErrorResponse(writer http.ResponseWriter, e APIError) {
+	JSONResponse(writer, e, e.StatusCode)
+}
 
-	response, err := json.Marshal(e)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_, err = writer.Write(response)
-	if err != nil {
-		log.Fatal(err)
-	}
+// ErrorResponse ...
+func ErrorResponse(writer http.ResponseWriter, err error) {
+	APIErrorResponse(writer, APIError{
+		StatusCode: http.StatusInternalServerError,
+		Message:    err.Error(),
+	})
 }
