@@ -1,9 +1,10 @@
 version: '3'
 services:
-  postgis:
-    image: kartoza/postgis
+  db:
+    image: postgis/postgis
     environment:
-    - POSTGRES_PASSWORD=password
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
     volumes:
     - pgdata:/var/lib/postgresql/data
     ports:
@@ -15,7 +16,7 @@ services:
     ports:
     - 8080:8080
     links:
-    - postgis
+    - db
 
 volumes:
   pgdata:
