@@ -59,7 +59,7 @@ const Form: React.FC<FormProps> = ({ submit }) => {
             onChange={handleChangeIMEI}
           />
         </label>
-        <input type="submit" value="Send" />
+        <input className="pointer" type="submit" value="Send" />
       </form>
     </>
   );
@@ -74,7 +74,7 @@ const DeviceControlPanel: React.FC = () => {
 
   if (open === false) {
     return (
-      <div className="Device" onClick={cover}>
+      <div className="Device pointer" onClick={cover}>
         <Label />
       </div>
     );
@@ -82,6 +82,7 @@ const DeviceControlPanel: React.FC = () => {
     return (
       <div className="Device">
         <Form submit={cover} />
+        <p className="pointer" onClick={cover}>Close</p>
       </div>
     );
   }
