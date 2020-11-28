@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ApiSendDevice } from "../../api/ApiDevices";
 import "./Device.css";
-
-const Label: React.FC = () => {
-  return <div>Add device</div>;
-};
 
 type FormProps = {
   submit: () => void;
@@ -14,28 +10,28 @@ const Form: React.FC<FormProps> = ({ submit }) => {
   const [name, setName] = useState("");
   const [IMEI, setIMEI] = useState("");
 
-  function handleChangeName(event: any) {
-    let a = event.target.value;
+  const handleChangeName = (event: any) => {
+    const a = event.target.value;
     setName(a);
-  }
+  };
 
-  function handleChangeIMEI(event: any) {
-    let a = event.target.value;
+  const handleChangeIMEI = (event: any) => {
+    const a = event.target.value;
     if (a > 0) {
       setIMEI(a);
     }
-  }
+  };
 
-  function submitData(event: any) {
+  const submitData = (event: any) => {
     if (name === "" || IMEI === "") {
       return;
     }
-    let device = { name: name, imei: IMEI };
+    const device = { name: name, imei: IMEI };
     ApiSendDevice(device);
 
     submit();
     event.preventDefault();
-  }
+  };
 
   return (
     <>
@@ -75,7 +71,7 @@ const DeviceControlPanel: React.FC = () => {
   if (open === false) {
     return (
       <div className="Device" onClick={cover}>
-        <Label />
+        Add device
       </div>
     );
   } else {

@@ -7,9 +7,9 @@ export const DevicesList: React.FC = () => {
   const [devices, setDevices] = useState<IDevice[]>([]);
   useEffect(() => {
     const getDevices = async () => {
-      let data: IDevice[] | undefined = await ApiGetDevices();
+      const data: IDevice[] | undefined = await ApiGetDevices();
       if (data !== undefined) {
-        let result: IDevice[] = data;
+        const result: IDevice[] = data;
         setDevices(result);
       }
     };
