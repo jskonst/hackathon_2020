@@ -1,43 +1,19 @@
 package main
 
 import (
-	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/jskonst/hackathon_2020/server/common"
-	"github.com/jskonst/hackathon_2020/server/config"
-	"github.com/jskonst/hackathon_2020/server/database"
-	"github.com/jskonst/hackathon_2020/server/position"
+	"github.com/rs/cors"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
 	"log"
 	"net/http"
+	"src/auth"
+	"src/config"
+	"src/database"
+	"src/device"
+	"src/logger"
+	"src/position"
 )
-
-func getPointHandler(database *database.Database) http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-		writer.Header().Set("Content-Type", "application/json")
-
-		repository := position.NewRepository(database)
-		positions, err := repository.GetPositions()
-		if err != nil {
-			common.CreateErrorResponse(writer, common.APIError{
-				StatusCode: http.StatusInternalServerError,
-				Message:    err.Error(),
-			})
-			return
-		}
-
-		response, err := json.Marshal(positions)
-		if err != nil {
-			common.CreateErrorResponse(writer, common.APIError{
-				StatusCode: http.StatusInternalServerError,
-				Message:    err.Error(),
-			})
-			return
-		}
-
-		writer.WriteHeader(http.StatusOK)
-		writer.Write(response)
-	}
-}
 
 func main() {
 	cfg, err := config.New("../.env")
@@ -50,9 +26,27 @@ func main() {
 		log.Fatalf("failed to connect to database: %s", err.Error())
 	}
 
-	router := mux.NewRouter()
-	router.HandleFunc("/positions", getPointHandler(db))
+	ocfg := &oauth2.Config{
+		ClientID:     cfg.ClientID,
+		ClientSecret: cfg.ClientSecret,
+		RedirectURL:  "http://localhost:3000/api/me",
+		Scopes:       []string{"profile"},
+		Endpoint:     google.Endpoint,
+	}
 
-	err = http.ListenAndServe(":3000", router)
+	logg := logger.NewLogger()
+	router := mux.NewRouter()
+
+	position.InitializeRoutes(router, db, logg)
+	device.InitializeRoutes(router, db, logg)
+	auth.InitializeRoutes(router, ocfg)
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST"},
+		AllowCredentials: true,
+	})
+
+	err = http.ListenAndServe(":3000", c.Handler(router))
 	log.Fatal(err)
 }

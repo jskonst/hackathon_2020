@@ -1,7 +1,7 @@
 package position
 
 import (
-	"github.com/jskonst/hackathon_2020/server/database"
+	"src/database"
 )
 
 // PositionRepository ....
@@ -9,20 +9,38 @@ type PositionRepository struct {
 	database *database.Database
 }
 
-// NewRepository ...
-func NewRepository(database *database.Database) *PositionRepository {
-	return &PositionRepository{database: database}
+// NewPositionRepository ...
+func NewPositionRepository(db *database.Database) *PositionRepository {
+	return &PositionRepository{
+		database: db,
+	}
 }
 
 // GetPositions ...
-func (r *PositionRepository) GetPositions() ([]Position, error) {
-	var positions []Position
-
+func (r *PositionRepository) GetPositions() (positions []Position, err error) {
 	query := "SELECT id, device_id, timestamp, ST_X(location) as latitude, ST_Y(location) as longitude FROM positions;"
-	err := r.database.Select(&positions, query)
-	if err != nil {
+
+	if err := r.database.Select(&positions, query); err != nil {
 		return nil, err
 	}
 
 	return positions, nil
+}
+
+// AddPosition ...
+func (r *PositionRepository) AddPosition(position Position) error {
+	query := "INSERT INTO positions (device_id, location) VALUES (:device_id, ST_POINT(:latitude, :longitude));"
+	_, err := r.database.NamedQuery(query, position)
+	return err
+}
+
+// AddPositionByIMEI ...
+func (r *PositionRepository) AddPositionByIMEI(position AddPositionRequestModel) error {
+	query := "INSERT INTO positions (device_id, location) VALUES (" +
+		"(SELECT id FROM devices WHERE imei = :imei)," +
+		"ST_POINT(:latitude, :longitude)" +
+		");"
+
+	_, err := r.database.NamedQuery(query, position)
+	return err
 }
