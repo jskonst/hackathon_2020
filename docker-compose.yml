@@ -9,7 +9,7 @@ services:
     - pgdata:/var/lib/postgresql/data
     ports:
     - "5432:5432"
-  
+
   adminer:
     image: adminer
     restart: always
@@ -17,6 +17,17 @@ services:
     - 8080:8080
     links:
     - db
+
+  server:
+    env_file: ./server/.env
+    image: test-server
+    build:
+      context: .
+      dockerfile: server.dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
 
 volumes:
   pgdata:
