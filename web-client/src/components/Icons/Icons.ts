@@ -1,14 +1,14 @@
 import L from 'leaflet'
 
 const iconPerson = new L.Icon({
-	iconUrl: require('../img/image.png'),
-	iconRetinaUrl: require('../img/image.png'),
+	// after delete hard-code url need delete image using link https://postimg.cc/delete/L7RpR42d/1ebed331
+	iconUrl: 'https://i.postimg.cc/TYMXZ8qJ/image.png',
 	iconAnchor: undefined,
-	popupAnchor: undefined, // new L.Point(50, 50),
+	popupAnchor: [2, -20],
 	shadowUrl: undefined,
 	shadowSize: undefined,
 	shadowAnchor: undefined,
-	iconSize: new L.Point(60, 60),
+	iconSize: [50, 50],
 	className: 'leaflet-div-icon'
 });
 
