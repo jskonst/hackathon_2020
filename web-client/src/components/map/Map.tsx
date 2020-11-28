@@ -57,7 +57,7 @@ const Map: React.FC = () => {
           closeOnEscapeKey={false}
           closeOnClick={false}
         >
-          Name very long for test
+          Cool kitty
         </Popup>
       </Marker>
       <Polyline positions={positions} />

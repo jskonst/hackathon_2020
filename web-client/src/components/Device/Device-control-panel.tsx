@@ -35,6 +35,7 @@ const Form: React.FC<FormProps> = ({ submit }) => {
 
   return (
     <>
+      <h4>Add device</h4>
       <form onSubmit={submitData}>
         <label>
           Device name:{" "}
@@ -56,6 +57,8 @@ const Form: React.FC<FormProps> = ({ submit }) => {
           />
         </label>
         <input className="pointer" type="submit" value="Send" />
+        <br/>
+        Publish image <a href="https://postimages.org" target="blank">here</a>
       </form>
     </>
   );
@@ -70,7 +73,7 @@ const DeviceControlPanel: React.FC = () => {
 
   if (open === false) {
     return (
-      <div className="Device" onClick={cover}>
+      <div className="Device pointer" onClick={cover}>
         Add device
       </div>
     );
