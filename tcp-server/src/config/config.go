@@ -8,7 +8,8 @@ import (
 
 // Config ...
 type Config struct {
-	ConnectionString string
+	APIAddress string
+	ListenAddress string
 }
 
 // New ...
@@ -18,10 +19,15 @@ func New(filenames ...string) (*Config, error) {
 		return nil, err
 	}
 
-	connectionString, exists := os.LookupEnv("CONNECTION_STRING")
+	apiAddress, exists := os.LookupEnv("API_ADDRESS")
 	if exists == false {
-		return nil, fmt.Errorf("unable to connect to database: CONNECTION_STRING is empty")
+		return nil, fmt.Errorf("unable to connect to database: API_ADDRESS is empty")
 	}
 
-	return &Config{ConnectionString: connectionString}, nil
+	listenAddress, exists := os.LookupEnv("LISTEN_ADDRESS")
+	if exists == false {
+		return nil, fmt.Errorf("unable to connect to database: LISTEN_ADDRESS is empty")
+	}
+
+	return &Config{APIAddress: apiAddress, ListenAddress: listenAddress}, nil
 }
