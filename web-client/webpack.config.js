@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const  SERVER_HOST = 'localhost';
-const  SERVER_PORT = 8080;
+const  SERVER_PORT = 3000;
 const SERVER_WEB_HOST = 'localhost';
 const SERVER_WEB_PORT = '4000';
 
