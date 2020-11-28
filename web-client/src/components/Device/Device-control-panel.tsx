@@ -70,17 +70,17 @@ const DeviceControlPanel: React.FC = () => {
 
   if (open === false) {
     return (
-      <div className="Device" onClick={cover}>
+      <button className="Device" onClick={cover}>
         Add device
-      </div>
+      </button>
     );
   } else {
     return (
       <div className="Device">
         <Form submit={cover} />
-        <p className="pointer" onClick={cover}>
+        <button className="pointer" onClick={cover}>
           Close
-        </p>
+        </button>
       </div>
     );
   }
