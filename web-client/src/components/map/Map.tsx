@@ -9,7 +9,8 @@ import {
 import { ApiGetPositions } from "../../api/ApiMapPoints";
 import ICoordinate from "../../interfaces/ICoordinate";
 import IServerResponse from "../../interfaces/IServerResponse";
-import "../app/App.css";
+import { iconPerson } from '../Icons/Icons'
+import "../App/App.css";
 
 const MapPlaceholder: React.FC = () => {
   return (
@@ -58,9 +59,12 @@ const Map: React.FC = () => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={startPosition}>
+      <Marker
+        position={startPosition}
+        icon={iconPerson}
+      >
         <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
+          Easy
         </Popup>
       </Marker>
       <Polyline positions={positions} />
