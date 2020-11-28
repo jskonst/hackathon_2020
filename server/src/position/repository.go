@@ -33,3 +33,14 @@ func (r *PositionRepository) AddPosition(position Position) error {
 	_, err := r.database.NamedQuery(query, position)
 	return err
 }
+
+// AddPositionByIMEI ...
+func (r *PositionRepository) AddPositionByIMEI(position AddPositionRequestModel) error {
+	query := "INSERT INTO positions (device_id, location) VALUES (" +
+		"(SELECT id FROM devices WHERE imei = :imei)," +
+		"ST_POINT(:latitude, :longitude)" +
+		");"
+
+	_, err := r.database.NamedQuery(query, position)
+	return err
+}

@@ -34,7 +34,7 @@ func getPositionHandler(db *database.Database, logger *logger.Logger) http.Handl
 // addPositionHandler ...
 func addPositionHandler(db *database.Database, logger *logger.Logger) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		var position Position
+		var position AddPositionRequestModel
 		repository := NewPositionRepository(db)
 
 		request.Body = http.MaxBytesReader(writer, request.Body, 1048576)
@@ -46,7 +46,7 @@ func addPositionHandler(db *database.Database, logger *logger.Logger) http.Handl
 			return
 		}
 
-		if err = repository.AddPosition(position); err != nil {
+		if err = repository.AddPositionByIMEI(position); err != nil {
 			logger.Err(err)
 			common.ErrorResponse(writer, err)
 			return
