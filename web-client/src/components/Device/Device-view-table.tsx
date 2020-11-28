@@ -24,6 +24,7 @@ export const DevicesList: React.FC = () => {
             <li>ID:{item.id}</li>
             <li>Name:{item.name}</li>
             <li>Imei:{item.imei}</li>
+            <img src={item.avatar_url} alt="" />
           </ul>
         );
       })}

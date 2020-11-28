@@ -6,9 +6,14 @@ import {
   Popup,
   TileLayer,
 } from "react-leaflet";
+
 import { ApiGetPositions } from "../../api/ApiMapPoints";
+import { ApiGetDevices } from "../../api/ApiDevices";
+
 import ICoordinate from "../../interfaces/ICoordinate";
 import IServerResponse from "../../interfaces/IServerResponse";
+import IDevice from "../../interfaces/IDevice";
+
 import { iconPerson } from "../Icons/Icons";
 import "../App/App.css";
 
@@ -26,6 +31,7 @@ const zoom = 14;
 
 const Map: React.FC = () => {
   const [positions, setPositions] = useState<ICoordinate[]>([]);
+  const [devices, setDevices] = useState<IDevice[]>([]);
 
   useEffect(() => {
     const getPos = async () => {
@@ -39,6 +45,15 @@ const Map: React.FC = () => {
       }
     };
     getPos();
+
+    const getDevices = async () => {
+      const data: IDevice[] | undefined = await ApiGetDevices();
+      if (data !== undefined) {
+        const result: IDevice[] = data;
+        setDevices(result);
+      }
+    };
+    getDevices();
   }, []);
   return (
     <MapContainer

@@ -9,6 +9,7 @@ type FormProps = {
 const Form: React.FC<FormProps> = ({ submit }) => {
   const [name, setName] = useState("");
   const [IMEI, setIMEI] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState('')
 
   const handleChangeName = (event: any) => {
     const a = event.target.value;
@@ -22,11 +23,16 @@ const Form: React.FC<FormProps> = ({ submit }) => {
     }
   };
 
+  const handleChangeAvatarUrl = (event: any) => {
+    const a = event.target.value;
+    setAvatarUrl(a);
+  };
+
   const submitData = (event: any) => {
     if (name === "" || IMEI === "") {
       return;
     }
-    const device = { name: name, imei: IMEI };
+    const device = { name: name, imei: IMEI, avatar_url: 'test' };
     ApiSendDevice(device);
 
     submit();
@@ -46,6 +52,19 @@ const Form: React.FC<FormProps> = ({ submit }) => {
             onChange={handleChangeName}
           />
         </label>
+        <br/>
+        Publish image <a href="https://postimages.org" target="blank">here</a>,
+        and then paste direct url:
+        <br />
+        <label>
+          Image URL:{" "}
+          <input
+            type="text"
+            value={avatarUrl}
+            placeholder="https://i.postimg.cc/"
+            onChange={handleChangeAvatarUrl}
+          />
+        </label>
         <br />
         <label>
           IMEI:{" "}
@@ -57,8 +76,6 @@ const Form: React.FC<FormProps> = ({ submit }) => {
           />
         </label>
         <input className="pointer" type="submit" value="Send" />
-        <br/>
-        Publish image <a href="https://postimages.org" target="blank">here</a>
       </form>
     </>
   );
