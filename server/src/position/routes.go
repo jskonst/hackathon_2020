@@ -2,6 +2,7 @@ package position
 
 import (
 	"encoding/json"
+	socketio "github.com/googollee/go-socket.io"
 	"github.com/gorilla/mux"
 	"net/http"
 	"src/common"
@@ -10,10 +11,10 @@ import (
 )
 
 // InitializeRoutes
-func InitializeRoutes(router *mux.Router, db *database.Database, logger *logger.Logger) {
+func InitializeRoutes(router *mux.Router, db *database.Database, logger *logger.Logger, socket *socketio.Server) {
 	router.HandleFunc("/api/positions", getPositionHandler(db, logger)).Methods("GET")
 	router.HandleFunc("/api/positions/{imei}", getPositionByIMEI(db, logger)).Methods("GET")
-	router.HandleFunc("/api/positions", addPositionHandler(db, logger)).Methods("POST")
+	router.HandleFunc("/api/positions", addPositionHandler(db, logger, socket)).Methods("POST")
 }
 
 // getPositionHandler ...
@@ -51,7 +52,7 @@ func getPositionByIMEI(db *database.Database, logger *logger.Logger) http.Handle
 }
 
 // addPositionHandler ...
-func addPositionHandler(db *database.Database, logger *logger.Logger) http.HandlerFunc {
+func addPositionHandler(db *database.Database, logger *logger.Logger, socket *socketio.Server) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		var position AddPositionRequestModel
 		repository := NewPositionRepository(db)
@@ -71,6 +72,7 @@ func addPositionHandler(db *database.Database, logger *logger.Logger) http.Handl
 			return
 		}
 
+		socket.BroadcastToRoom("", "map", "position:new", position)
 		logger.Info().Interface("position", position).Msg("added new position")
 	}
 }

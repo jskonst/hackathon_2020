@@ -44,16 +44,16 @@ func main() {
 	}
 
 	socket.OnConnect("/", func(conn socketio.Conn) error {
-		log.Println("NEW CONNECTION")
+		conn.SetContext("")
+		logg.Info().Msg("NEW CONNECTION" + conn.ID())
+		conn.Join("map")
 
 		return nil
 	})
 
-	position.InitializeRoutes(router, db, logg)
+	position.InitializeRoutes(router, db, logg, socket)
 	device.InitializeRoutes(router, db, logg)
 	auth.InitializeRoutes(router, ocfg)
-
-	//router.Handle("/socket.io", socket)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
@@ -61,6 +61,11 @@ func main() {
 		AllowCredentials: true,
 	})
 
+	go socket.Serve()
+	defer socket.Close()
+
+	router.Handle("/socket.io/", c.Handler(socket))
 	err = http.ListenAndServe(":3000", c.Handler(router))
+
 	log.Fatal(err)
 }
