@@ -63,8 +63,13 @@ const Map: React.FC = () => {
         position={startPosition}
         icon={iconPerson}
       >
-        <Popup>
-          Easy
+        <Popup
+          closeButton={false}
+          autoClose={false}
+          closeOnEscapeKey={false}
+          closeOnClick={false}
+        >
+          Name very long for test
         </Popup>
       </Marker>
       <Polyline positions={positions} />

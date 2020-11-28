@@ -5,9 +5,6 @@ const iconPerson = new L.Icon({
 	iconUrl: 'https://i.postimg.cc/TYMXZ8qJ/image.png',
 	iconAnchor: undefined,
 	popupAnchor: [2, -20],
-	shadowUrl: undefined,
-	shadowSize: undefined,
-	shadowAnchor: undefined,
 	iconSize: [50, 50],
 	className: 'leaflet-div-icon'
 });
