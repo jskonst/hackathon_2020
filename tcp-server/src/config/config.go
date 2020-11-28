@@ -9,8 +9,6 @@ import (
 // Config ...
 type Config struct {
 	ConnectionString string
-	ClientID         string
-	ClientSecret     string
 }
 
 // New ...
@@ -25,19 +23,5 @@ func New(filenames ...string) (*Config, error) {
 		return nil, fmt.Errorf("unable to connect to database: CONNECTION_STRING is empty")
 	}
 
-	clientId, exists := os.LookupEnv("CLIENT_ID")
-	if exists == false {
-		return nil, fmt.Errorf("missing CLIENT_ID")
-	}
-
-	clientSecret, exists := os.LookupEnv("CLIENT_SECRET")
-	if exists == false {
-		return nil, fmt.Errorf("missing CLIENT_SECRET")
-	}
-
-	return &Config{
-		ConnectionString: connectionString,
-		ClientID:         clientId,
-		ClientSecret:     clientSecret,
-	}, nil
+	return &Config{ConnectionString: connectionString}, nil
 }
