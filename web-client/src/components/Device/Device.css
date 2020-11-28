@@ -2,18 +2,35 @@
   background-color: #fff;
   border-radius: 10px;
   bottom: 1.5em;
-  margin: 1em;
   font-size: 1.2em;
+  margin: 1em;
   opacity: 0.8;
   padding: 1em 2.5em;
   position: fixed;
   resize: both;
   right: 1.5em;
+  transition: all .5s ease-out;
   z-index: 500;
 }
 
-.Device:hover {
+.pointer {
   cursor: pointer;
+}
+
+.Device:hover {
+  opacity: 1;
+  transition: all .5s ease-out;
+}
+
+.Device > p {
+  border-radius: 5px;
+  margin: .5em auto auto;
+  padding: 5px 10px;
+  width: max-content;
+}
+
+.Device:hover > p {
+  background-color: #eee;
 }
 
 .Devices-list {

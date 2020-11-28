@@ -9,7 +9,8 @@ import {
 import { ApiGetPositions } from "../../api/ApiMapPoints";
 import ICoordinate from "../../interfaces/ICoordinate";
 import IServerResponse from "../../interfaces/IServerResponse";
-import "../app/App.css";
+import { iconPerson } from "../Icons/Icons";
+import "../App/App.css";
 
 const MapPlaceholder: React.FC = () => {
   return (
@@ -20,7 +21,7 @@ const MapPlaceholder: React.FC = () => {
   );
 };
 
-const startPosition = { lat: 56.99, lng: 40.97 };
+let startPosition = { lat: 56.99, lng: 40.97 };
 const zoom = 14;
 
 const Map: React.FC = () => {
@@ -33,6 +34,7 @@ const Map: React.FC = () => {
         const result: ICoordinate[] = data.map((item) => {
           return { lat: item.latitude, lng: item.longitude };
         });
+        startPosition = result[0];
         setPositions(result);
       }
     };
@@ -48,9 +50,14 @@ const Map: React.FC = () => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={startPosition}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
+      <Marker position={startPosition} icon={iconPerson}>
+        <Popup
+          closeButton={false}
+          autoClose={false}
+          closeOnEscapeKey={false}
+          closeOnClick={false}
+        >
+          Name very long for test
         </Popup>
       </Marker>
       <Polyline positions={positions} />
