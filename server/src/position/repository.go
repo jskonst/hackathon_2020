@@ -1,6 +1,7 @@
 package position
 
 import (
+	"fmt"
 	"src/database"
 )
 
@@ -35,12 +36,17 @@ func (r *PositionRepository) AddPosition(position Position) error {
 }
 
 // AddPositionByIMEI ...
-func (r *PositionRepository) AddPositionByIMEI(position AddPositionRequestModel) error {
-	query := "INSERT INTO positions (device_id, location) VALUES (" +
-		"(SELECT id FROM devices WHERE imei = :imei)," +
-		"ST_POINT(:latitude, :longitude)" +
-		");"
+func (r *PositionRepository) AddPositionByIMEI(model AddPositionRequestModel) error {
+	var position Position
 
-	_, err := r.database.NamedQuery(query, position)
+	query := "SELECT id FROM positions WHERE timestamp = $1 LIMIT 1;"
+	if err := r.database.Get(&position, query, model.Timestamp); err == nil {
+		return fmt.Errorf("position with timestamp %s already exists", model.Timestamp)
+	}
+
+	query = "INSERT INTO positions (device_id, timestamp, location) VALUES (" +
+		"(SELECT id FROM devices WHERE imei = :imei), :timestamp, ST_POINT(:latitude, :longitude))"
+
+	_, err := r.database.NamedQuery(query, model)
 	return err
 }
