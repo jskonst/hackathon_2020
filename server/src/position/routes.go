@@ -12,6 +12,7 @@ import (
 // InitializeRoutes
 func InitializeRoutes(router *mux.Router, db *database.Database, logger *logger.Logger) {
 	router.HandleFunc("/api/positions", getPositionHandler(db, logger)).Methods("GET")
+	router.HandleFunc("/api/positions/{imei}", getPositionByIMEI(db, logger)).Methods("GET")
 	router.HandleFunc("/api/positions", addPositionHandler(db, logger)).Methods("POST")
 }
 
@@ -20,6 +21,24 @@ func getPositionHandler(db *database.Database, logger *logger.Logger) http.Handl
 	return func(writer http.ResponseWriter, request *http.Request) {
 		repository := NewPositionRepository(db)
 		positions, err := repository.GetPositions()
+
+		if err != nil {
+			logger.Err(err)
+			common.ErrorResponse(writer, err)
+			return
+		}
+
+		common.JSONResponse(writer, positions, http.StatusOK)
+	}
+}
+
+// getPositionByIMEI ...
+func getPositionByIMEI(db *database.Database, logger *logger.Logger) http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		imei := mux.Vars(request)["imei"]
+
+		repository := NewPositionRepository(db)
+		positions, err := repository.GetPositionsByIMEI(imei)
 
 		if err != nil {
 			logger.Err(err)

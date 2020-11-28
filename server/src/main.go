@@ -1,6 +1,7 @@
 package main
 
 import (
+	socketio "github.com/googollee/go-socket.io"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"golang.org/x/oauth2"
@@ -37,13 +38,26 @@ func main() {
 	logg := logger.NewLogger()
 	router := mux.NewRouter()
 
+	socket, err := socketio.NewServer(nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	socket.OnConnect("/", func(conn socketio.Conn) error {
+		log.Println("NEW CONNECTION")
+
+		return nil
+	})
+
 	position.InitializeRoutes(router, db, logg)
 	device.InitializeRoutes(router, db, logg)
 	auth.InitializeRoutes(router, ocfg)
 
+	//router.Handle("/socket.io", socket)
+
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"GET", "POST"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "GET", "DELETE"},
 		AllowCredentials: true,
 	})
 
