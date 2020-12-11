@@ -28,6 +28,18 @@ func (r *PositionRepository) GetPositions() (positions []Position, err error) {
 	return positions, nil
 }
 
+// GetPositionsByIMEI ...
+func (r *PositionRepository) GetPositionsByIMEI(imei string) (positions []Position, err error) {
+	query := "SELECT id, device_id, timestamp, ST_X(location) as latitude, ST_Y(location) as longitude" +
+		" FROM positions WHERE device_id = (SELECT id FROM devices WHERE imei = $1) ORDER BY id DESC"
+
+	if err := r.database.Select(&positions, query, imei); err != nil {
+		return nil, err
+	}
+
+	return positions, nil
+}
+
 // AddPosition ...
 func (r *PositionRepository) AddPosition(position Position) error {
 	query := "INSERT INTO positions (device_id, location) VALUES (:device_id, ST_POINT(:latitude, :longitude));"

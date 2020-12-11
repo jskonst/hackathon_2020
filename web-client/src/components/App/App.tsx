@@ -7,9 +7,9 @@ import "./App.css";
 const App: React.FC = () => {
   return (
     <>
-      <DevicesList />
       <Map />
       <DeviceControlPanel />
+      <DevicesList />
     </>
   );
 };

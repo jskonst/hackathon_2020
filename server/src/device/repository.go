@@ -40,7 +40,7 @@ func (r *DeviceRepository) GetDeviceByIMEI(imei string) (device Device, err erro
 
 // AddDevice ...
 func (r *DeviceRepository) AddDevice(device Device) error {
-	query := "INSERT INTO devices (name, imei) VALUES (:name, :imei);"
+	query := "INSERT INTO devices (name, imei, avatar_url) VALUES (:name, :imei, :avatar_url);"
 	_, err := r.database.NamedQuery(query, device)
 	return err
 }
