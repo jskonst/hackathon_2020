@@ -9,6 +9,10 @@
             "path": "server"
         },
         {
+            "name": "tcp-server",
+            "path": "tcp-server"
+        },
+        {
             "name": "web",
             "path": "web-client"
         },
